@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import Web3 from "web3";
 import detectEthereumProvider from "@metamask/detect-provider"
 import KryptoBird from '../abis/KryptoBird.json'
-import _deploy_contracts from "../../migrations/2_deploy_contracts";
 
 
 class App extends Component {
@@ -32,7 +31,7 @@ class App extends Component {
     async loadBlockChainData() {
         const web3 = window.web3
         const accounts = await web3.eth.getAccounts();
-        this.setState({account:accounts})
+        this.setState({account:accounts[0]})
 
         const networkId = await web3.eth.net.getId()
         const networkData = KryptoBird.networks[networkId]
@@ -86,6 +85,7 @@ class App extends Component {
     render() {
         return (
             <div>
+
                 <nav className="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow "> 
                     <div className="navbar-brand col-sm-3 col-md-3 mr-0" style={{color: 'white'}}>
                         Krypto Birdz NFTs (Non Fungible Token)
@@ -97,6 +97,41 @@ class App extends Component {
                         </li>
                     </ul>
                  </nav>
+
+                 <div className="container-fluid mt-1">
+                     <div className="row">
+                        <main role="main" className="col-lg-12 d-flex text-center">
+                            <div className="content mr-auto ml-auto" style={{opacity: '0.8'}}>
+                                <h1 style={{color:'white'}}>KryptoBirdz - NFT Marketplace</h1>
+
+                                <form onSubmit={(event) => {
+                                    event.preventDefault();
+                                    const kryptoBird = this.kryptoBird.value
+                                    this.mint(kryptoBird)
+
+                                }}>
+
+                                    <input
+                                        type='text'
+                                        placeholder='Add a file location'
+                                        className="form-control mb-1"
+                                        ref={(input) => this.kryptoBird = input}
+                                    />
+
+                                    <input
+                                        style={{margin:"6px"}}
+                                        type='submit'
+                                        value='MINT'
+                                        className="btn btn-primary btn-black"
+                                    />
+
+                                </form>
+                            </div>
+
+
+                        </main>
+                     </div>
+                 </div>
             </div>
         )
     }
